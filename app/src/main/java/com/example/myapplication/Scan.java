@@ -36,6 +36,7 @@ public class Scan extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 200;
 
     private Uri imageUri;
+    private byte[] imageInByte;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,24 +66,63 @@ public class Scan extends AppCompatActivity {
         startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
     }
 
+    private void displayApiResponse(String responseMessage) {
+        // Since you want to update the UI from a background thread, you can use a Handler
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                // Update the UI with the API result (responseMessage)
+                Toast.makeText(Scan.this, "API Response: " + responseMessage, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+    private void handleApiCall(String apiUrl, byte[] imageInByte) {
+        try {
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "image/jpeg");
+            connection.setDoOutput(true);
+            connection.getOutputStream().write(imageInByte);
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // API call successful, read the response
+                String responseMessage = readResponseMessage(connection);
+                displayApiResponse(responseMessage);
+            } else {
+                // API call failed
+                displayApiResponse("API call failed with response code: " + responseCode);
+            }
+
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+            displayApiResponse("Error during API call: " + e.getMessage());
+        }
+    }
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            // ... (same code as before)
 
-            // Get image URI
-            Uri imageUri = data.getData();
-
-            // Open image stream
             try {
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 Bitmap image = BitmapFactory.decodeStream(imageStream);
+                // ... (same code as before)
 
                 // Convert to byte array
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] imageInByte = baos.toByteArray();
+                imageInByte = baos.toByteArray(); // Assign the byte array to imageInByte
 
                 // Send to API using a Thread
                 String apiUrl = "http://themoddedcube.pythonanywhere.com/classify";
@@ -96,45 +136,10 @@ public class Scan extends AppCompatActivity {
             } catch (IOException e) {
                 Log.e("Image Upload", "Error uploading image", e);
             }
-
         }
     }
 
-    private void handleApiCall(String apiUrl, byte[] imageInByte) {
-        try {
-            URL url = new URL(apiUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
-            conn.setRequestProperty("Content-Type", "image/jpeg");
-            conn.getOutputStream().write(imageInByte);
 
-            // Check response
-            int responseCode = conn.getResponseCode();
-            if (responseCode == 200) {
-                // Upload succeeded, read the response message from the API
-                String responseMessage = readResponseMessage(conn);
-                // Show the response message as a toast on the main UI thread
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(Scan.this, responseMessage, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                // Show an error toast on the main UI thread
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(Scan.this, "Error uploading image", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-        } catch (IOException e) {
-            Log.e("Image Upload", "Error uploading image", e);
-        }
-    }
 
     // Helper method to read the response message from the API
     private String readResponseMessage(HttpURLConnection connection) throws IOException {
