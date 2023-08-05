@@ -30,6 +30,28 @@
         <activity android:name=".ManuallySelect"/>
         <activity android:name=".Scan"/>
         <activity android:name="AboutUs"/>
+        <activity
+            android:name=".ResponseActivity"
+            android:label="API Response Activity"
+            android:theme="@style/Theme.MyApplication"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+        </activity>
+        <activity
+            android:name=".DisplayResponseActivity"
+            android:label="Manually Select API Response Activity"
+            android:theme="@style/Theme.MyApplication"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+        </activity>
+        <activity
+            android:name=".LoadingActivity"
+            android:label="Loading Activity"
+            android:theme="@style/Theme.MyApplication"> <!-- Set the appropriate theme for the loading activity -->
+        </activity>
+        <activity android:name=".EmailActivity"/>
 
     </application>
 

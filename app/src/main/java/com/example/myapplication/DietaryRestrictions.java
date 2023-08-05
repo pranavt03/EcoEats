@@ -1,4 +1,6 @@
 package com.example.myapplication;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -6,20 +8,20 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 public class DietaryRestrictions extends AppCompatActivity {
 
     private ListView listView;
-    private SearchView searchView;
     private ArrayAdapter<String> adapter;
     private List<String> dataList;
     private List<Boolean> checkedItems;
-    private Button confirmButton;
-    private Button clearButton;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +29,12 @@ public class DietaryRestrictions extends AppCompatActivity {
         setContentView(R.layout.restrictions_dietary);
 
         listView = findViewById(R.id.listView);
-        searchView = findViewById(R.id.searchView);
-        confirmButton = findViewById(R.id.confirmButton);
-        clearButton = findViewById(R.id.clearButton);
+        SearchView searchView = findViewById(R.id.searchView);
+        Button confirmButton = findViewById(R.id.confirmButton);
+        Button clearButton = findViewById(R.id.clearButton);
 
-        // Initialize the data source
+        preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
         dataList = Arrays.asList(
                 "Peanuts",
                 "Tree Nuts",
@@ -127,7 +130,6 @@ public class DietaryRestrictions extends AppCompatActivity {
                 "Wheat Germ",
                 "Baker's Yeast",
                 "Brewer's Yeast",
-                "Monosodium Glutamate (MSG)",
                 "Caffeine",
                 "Red Dye",
                 "Yellow Dye",
@@ -139,27 +141,23 @@ public class DietaryRestrictions extends AppCompatActivity {
                 "Artificial Colors",
                 "Nitrates",
                 "Nitrites",
-                "Sodium Benzoate",
                 "Aspartame",
-                "Saccharin",
-                "Sucralose",
-                "Acesulfame Potassium",
-                "Carrageenan"
-                // Add more allergens as needed
+                "Saccharin"
         );
 
-        // Initialize the checked items list
+        // init the checked items list
         checkedItems = new ArrayList<>();
         for (int i = 0; i < dataList.size(); i++) {
-            checkedItems.add(false);
+            boolean isChecked = preferences.getBoolean(dataList.get(i), false);
+            checkedItems.add(isChecked);
         }
 
-        // Create and set the adapter
+        // set adapt
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, dataList);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        // Set the search view listener
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -173,31 +171,32 @@ public class DietaryRestrictions extends AppCompatActivity {
             }
         });
 
-        // Set the list view item click listener
+
+
+
         listView.setOnItemClickListener((parent, view, position, id) -> {
             boolean isChecked = listView.isItemChecked(position);
             checkedItems.set(position, isChecked);
-            Toast.makeText(DietaryRestrictions.this, dataList.get(position) + " - Checked: " + isChecked, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, dataList.get(position) + " - Checked: " + isChecked, Toast.LENGTH_SHORT).show();
         });
 
         confirmButton.setOnClickListener(v -> {
-            // Do something with the checked items
+            showSelectedRestrictionsDialog();
+
+            // conf
+            SharedPreferences.Editor editor = preferences.edit();
+
             for (int i = 0; i < checkedItems.size(); i++) {
                 boolean isChecked = checkedItems.get(i);
-                String allergen = dataList.get(i);
-                if (isChecked) {
-                    // The allergen is checked
-                    Toast.makeText(DietaryRestrictions.this, allergen + " - Checked", Toast.LENGTH_SHORT).show();
-                } else {
-                    // The allergen is not checked
-                    Toast.makeText(DietaryRestrictions.this, allergen + " - Not Checked", Toast.LENGTH_SHORT).show();
-                }
+                editor.putBoolean(dataList.get(i), isChecked);
             }
+
+            editor.apply();
         });
 
-        // Set the clear button click listener
+
         clearButton.setOnClickListener(v -> {
-            // Clear all the checkboxes
+            // Clear checkbxoes
             for (int i = 0; i < checkedItems.size(); i++) {
                 checkedItems.set(i, false);
                 listView.setItemChecked(i, false);
@@ -208,12 +207,59 @@ public class DietaryRestrictions extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Save the checked items when the back button is pressed
-        super.onBackPressed();
 
+        super.onBackPressed();
         for (int i = 0; i < checkedItems.size(); i++) {
             boolean isChecked = listView.isItemChecked(i);
             checkedItems.set(i, isChecked);
         }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = preferences.edit();
+
+
+
+        for (int i = 0; i < checkedItems.size(); i++) {
+            boolean isChecked = listView.isItemChecked(i);
+            editor.putBoolean(dataList.get(i), isChecked);
+        }
+
+        editor.apply();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        for (int i = 0; i < dataList.size(); i++) {
+            boolean isChecked = preferences.getBoolean(dataList.get(i), false);
+            checkedItems.set(i, isChecked);
+            listView.setItemChecked(i, isChecked);
+        }
+    }
+
+    private void showSelectedRestrictionsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selected Restrictions");
+        StringBuilder selectedRestrictions = new StringBuilder();
+
+        for (int i = 0; i < checkedItems.size(); i++) {
+            boolean isChecked = checkedItems.get(i);
+            if (isChecked) {
+                selectedRestrictions.append(dataList.get(i)).append("\n");
+            }
+        }
+
+        if (selectedRestrictions.length() == 0) {
+            selectedRestrictions.append("No restrictions selected.");
+        }
+
+        builder.setMessage(selectedRestrictions.toString());
+        builder.setPositiveButton("OK", (dialog, which) -> {
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

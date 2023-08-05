@@ -14,11 +14,21 @@
 
     <TextView
         android:id="@+id/tvResponse"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:layout_centerInParent="true"
         android:paddingTop="16dp"
-        android:text="API Response will appear here"
+        android:text="Scan to Get Recipes"
+        android:textColor="@color/green"
         android:textSize="16sp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

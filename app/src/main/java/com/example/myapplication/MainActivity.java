@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button but1 = (Button)findViewById(R.id.txtScan);
         Button but2 = (Button)findViewById(R.id.txtManually);
-        Button but3 = (Button)findViewById(R.id.txtHistory);
-        Button but4 = (Button)findViewById(R.id.txtRestrictions);
         Button but5 = (Button)findViewById(R.id.txtAboutUs);
         but1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,20 +43,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v1) {
                 Intent int2 = new Intent(MainActivity.this, ManuallySelect.class);
                 startActivity(int2);
-            }
-        });
-        but3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v2) {
-                Intent int3 = new Intent(MainActivity.this, past_history.class);
-                startActivity(int3);
-            }
-        });
-        but4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v3) {
-                Intent int4 = new Intent(MainActivity.this, DietaryRestrictions.class);
-                startActivity(int4);
             }
         });
         but5.setOnClickListener(new View.OnClickListener() {

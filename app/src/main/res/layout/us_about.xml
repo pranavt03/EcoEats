@@ -15,18 +15,19 @@
         android:layout_marginTop="100dp"
         android:layout_marginEnd="100dp"
         android:layout_marginBottom="10dp"
-        android:text="What is OptimizeGreen?"
+        android:text="What is EcoEats?"
         android:textColor="@color/green"/>
     <TextView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/Question"
-        android:text="According to the NY Post, the average American throws away 6,180 pounds of spoiled food from their fridge in their lifetime. OptimizeGreen aims to address the vast amount of food wasted, in the United States and the world. Using this application, we can make use of your leftover ingredients in your fridge to offer delicious recipes that can satiate your stomach and reduce the amount of food that is thrown away."
+        android:text="According to the NY Post, the average American throws away 6,180 pounds of spoiled food from their fridge in their lifetime. OptimizeGreen aims to address the vast amount of food wasted, in the United States and the world. Using this application, we can make use of your leftover ingredients in your fridge to offer delicious recipes that can satiate your stomach and curb the amount of food that is thrown away."
         android:textColor="@color/cardview_dark_background"
         />
 
     <Button
+        android:id="@+id/openEmailButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

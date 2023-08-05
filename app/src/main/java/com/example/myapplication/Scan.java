@@ -124,7 +124,7 @@ public class Scan extends AppCompatActivity {
                     @Override
                     public void run() {
                         // Handle the API call failure
-                        String errorMessage = "API call failed: " + e.getMessage();
+                        String errorMessage = "Error: Please try again";
                         Toast.makeText(Scan.this, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -135,15 +135,18 @@ public class Scan extends AppCompatActivity {
                 // Get the API response as a String
                 final String apiResponse = response.body().string();
 
-                // Update the TextView with the API response
+                // Close the response body after using it
+                response.close();
+
+                // Launch the ResponseActivity to display the API response
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvResponse.setText(apiResponse);
+                        Intent responseIntent = new Intent(Scan.this, ResponseActivity.class);
+                        responseIntent.putExtra(ResponseActivity.EXTRA_API_RESPONSE, apiResponse);
+                        startActivity(responseIntent);
                     }
                 });
-                // Close the response body after using it
-                response.close();
             }
         });
     }

@@ -52,6 +52,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.x.x' // Replace with the appropriate converter based on your API response format
     // OkHttp
     implementation "com.squareup.okhttp3:okhttp:4.9.1"
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'com.squareup.okio:okio:3.0.0-alpha.3'
 
 
 }
