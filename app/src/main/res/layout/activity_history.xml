@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".past_history"
+    tools:context="com.pranavtayi.myapplication.past_history"
     >
     <TextView
         android:id="@+id/simpleTextView"

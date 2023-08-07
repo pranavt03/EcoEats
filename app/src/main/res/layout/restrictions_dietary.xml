@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".DietaryRestrictions">
+    tools:context="com.pranavtayi.myapplication.DietaryRestrictions">
 
     <SearchView
         android:id="@+id/searchView"

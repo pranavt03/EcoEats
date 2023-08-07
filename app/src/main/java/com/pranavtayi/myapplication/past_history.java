@@ -1,7 +1,8 @@
-package com.example.myapplication;
+package com.pranavtayi.myapplication;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
 
 public class past_history extends AppCompatActivity {
     @Override

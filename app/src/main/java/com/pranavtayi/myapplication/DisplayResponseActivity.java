@@ -1,9 +1,10 @@
-package com.example.myapplication;
+package com.pranavtayi.myapplication;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 
 public class DisplayResponseActivity extends AppCompatActivity {
 

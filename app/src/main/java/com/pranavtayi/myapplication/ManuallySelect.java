@@ -1,11 +1,9 @@
-package com.example.myapplication;
+package com.pranavtayi.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -34,7 +32,6 @@ import okhttp3.Response;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 public class ManuallySelect extends AppCompatActivity {
 

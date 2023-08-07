@@ -18,20 +18,20 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="com.pranavtayi.myapplication.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".past_history" />
-        <activity android:name=".DietaryRestrictions"/>
-        <activity android:name=".ManuallySelect"/>
-        <activity android:name=".Scan"/>
-        <activity android:name="AboutUs"/>
+        <activity android:name="com.pranavtayi.myapplication.past_history" />
+        <activity android:name="com.pranavtayi.myapplication.DietaryRestrictions"/>
+        <activity android:name="com.pranavtayi.myapplication.ManuallySelect"/>
+        <activity android:name="com.pranavtayi.myapplication.Scan"/>
+        <activity android:name="com.pranavtayi.myapplication.AboutUs"/>
         <activity
-            android:name=".ResponseActivity"
+            android:name="com.pranavtayi.myapplication.ResponseActivity"
             android:label="API Response Activity"
             android:theme="@style/Theme.MyApplication"
             android:launchMode="singleTask"
@@ -39,7 +39,7 @@
             android:excludeFromRecents="true">
         </activity>
         <activity
-            android:name=".DisplayResponseActivity"
+            android:name="com.pranavtayi.myapplication.DisplayResponseActivity"
             android:label="Manually Select API Response Activity"
             android:theme="@style/Theme.MyApplication"
             android:launchMode="singleTask"
@@ -47,11 +47,11 @@
             android:excludeFromRecents="true">
         </activity>
         <activity
-            android:name=".LoadingActivity"
+            android:name="com.pranavtayi.myapplication.LoadingActivity"
             android:label="Loading Activity"
             android:theme="@style/Theme.MyApplication"> <!-- Set the appropriate theme for the loading activity -->
         </activity>
-        <activity android:name=".EmailActivity"/>
+        <activity android:name="com.pranavtayi.myapplication.EmailActivity"/>
 
     </application>
 

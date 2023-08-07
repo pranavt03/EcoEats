@@ -1,7 +1,9 @@
-package com.example.myapplication;
+package com.pranavtayi.myapplication;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+
 
 public class EmailActivity extends AppCompatActivity {
 

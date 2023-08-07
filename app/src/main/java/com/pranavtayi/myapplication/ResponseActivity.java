@@ -1,8 +1,9 @@
-package com.example.myapplication;
+package com.pranavtayi.myapplication;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
+
 
 public class ResponseActivity extends Activity {
 

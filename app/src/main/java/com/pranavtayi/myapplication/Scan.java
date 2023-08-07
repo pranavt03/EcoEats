@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.pranavtayi.myapplication;
 
 import android.Manifest;
 import android.app.Activity;
