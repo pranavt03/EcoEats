@@ -41,5 +41,12 @@
         android:layout_alignParentBottom="true"
         android:text="Clear" />
 
+    <include
+        layout="@layout/loading_layout"
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+
 
 </RelativeLayout>

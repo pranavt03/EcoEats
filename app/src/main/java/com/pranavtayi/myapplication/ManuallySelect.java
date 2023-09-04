@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -35,6 +36,7 @@ import com.google.gson.JsonObject;
 
 public class ManuallySelect extends AppCompatActivity {
 
+    private View loadingView;
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private List<String> dataList;
@@ -43,9 +45,10 @@ public class ManuallySelect extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_manually);
-
+        loadingView = findViewById(R.id.loadingView);
         listView = findViewById(R.id.listView);
         SearchView searchView = findViewById(R.id.searchView);
         Button confirmButton = findViewById(R.id.confirmButton);
@@ -345,7 +348,8 @@ public class ManuallySelect extends AppCompatActivity {
         });
 
         confirmButton.setOnClickListener(v -> {
-            showSelectedRestrictionsDialog();
+            // Show loading view
+            loadingView.setVisibility(View.VISIBLE);
 
             // Save the checked items to shared preferences
             SharedPreferences.Editor editor = preferences.edit();
@@ -468,24 +472,15 @@ public class ManuallySelect extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            // Start the LoadingActivity first
-                            Intent loadingIntent = new Intent(ManuallySelect.this, LoadingActivity.class);
-                            startActivity(loadingIntent);
+                            // Hide loading view
+                            loadingView.setVisibility(View.GONE);
 
-                            // Pass the response data as an extra to the LoadingActivity
+                            // Pass the response data as an extra to the DisplayResponseActivity
                             Intent intent = new Intent(ManuallySelect.this, DisplayResponseActivity.class);
                             intent.putExtra("responseData", responseBody);
 
-                            // Start the DisplayResponseActivity with a delay of 2 seconds (adjust as needed)
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Finish the LoadingActivity and start the DisplayResponseActivity
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }, 2000); // Delay of 2 seconds (adjust as needed)
+                            // Start the DisplayResponseActivity immediately
+                            startActivity(intent);
                         }
                     });
                 } else {
@@ -494,6 +489,9 @@ public class ManuallySelect extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            // Hide loading view
+                            loadingView.setVisibility(View.GONE);
+
                             // Show the API error as a Toast
                             Toast.makeText(ManuallySelect.this, "API Error: " + errorCode, Toast.LENGTH_LONG).show();
                         }
